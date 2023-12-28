@@ -1,0 +1,107 @@
+.mart-products-main-container {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+}
+
+.mart-products-content-main-container {
+  display: flex;
+  flex: 1;
+}
+
+.mart-products-container-height-set {
+  flex: 1;
+  display: flex;
+}
+
+@media screen and (min-width: 768px) {
+  .mart-products-row-height-set {
+    flex: 1;
+    display: flex;
+  }
+
+  .mart-products-col-height-set {
+    flex: 1;
+    display: flex;
+  }
+}
+
+.mart-products-filters-main-container {
+  background-color: #5e5d5d;
+  width: 100%;
+  flex: 1;
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+}
+
+.mart-products-search-bar {
+  width: 100%;
+  max-width: 300px;
+  height: 46px;
+  color: #ffffff;
+  background-color: #c0bfbf;
+  border: 2px solid #ffffff;
+  border-radius: 6px;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-weight: 400;
+  font-size: 15px;
+  outline: none;
+  padding: 5px;
+}
+
+.mart-products-search-bar:focus {
+  background-color: #ffffff;
+  border-color: #000000;
+  color: #000000;
+}
+
+.mart-products-filters-heading {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 23px;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.mart-products-filters-category-heading {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 18px;
+  font-weight: 500;
+  color: #ffffff;
+}
+
+.mart-products-list-main-container {
+  padding: 16px 22px;
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  width: 100%;
+}
+
+.mart-products-list-main-heading {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 27px;
+  font-weight: 600;
+  color: #000000;
+}
+
+.mart-products-no-data-view-container {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 10%;
+}
+
+.mart-products-table-no-data-view-text {
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+    Oxygen, Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+  font-size: 26px;
+  font-weight: 600;
+  color: red;
+  text-align: center;
+}
