@@ -1,9 +1,28 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 
 import "./navbar.css";
+import { useUserAuth } from "../../context/authContext";
+import { auth } from "../../firebase";
 
 const Navbar = () => {
+  const navigate = useNavigate();
+
+  const { isLoggedIn, signOutUser, setUser, setIsLoggedIn } = useUserAuth();
+
+  const logoutTheUser = async () => {
+    try {
+      await signOutUser();
+      if (auth.currentUser === null) {
+        setIsLoggedIn(false);
+        setUser({});
+        navigate("/home", { replace: true });
+      }
+    } catch (error) {
+      console.log(error.message);
+    }
+  };
+
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
       <NavLink className="navbar-brand" to={"/home"}>
@@ -30,18 +49,24 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav d-flex align-items-center ml-auto">
           <li className="nav-item">
-            <NavLink className="nav-link active">
+            <NavLink className="nav-link active" to={"/home"}>
               Home <span className="sr-only">(current)</span>
             </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link">Products</NavLink>
+            <NavLink className="nav-link" to={"/products"}>
+              Products
+            </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link">About us</NavLink>
+            <NavLink className="nav-link" to={"/about-us"}>
+              About us
+            </NavLink>
           </li>
           <li className="nav-item">
-            <NavLink className="nav-link">Cart</NavLink>
+            <NavLink className="nav-link" to={"/cart"}>
+              Cart
+            </NavLink>
           </li>
           <li className="nav-item">
             <NavLink className="nav-link mr-lg-2 ml-lg-2">
@@ -53,12 +78,23 @@ const Navbar = () => {
             </NavLink>
           </li>
           <li className="nav-item">
-            <button
-              className="nav-link btn btn-danger text-white pl-2 pr-2"
-              type="button"
-            >
-              Logout
-            </button>
+            {isLoggedIn ? (
+              <button
+                className="nav-link btn btn-danger text-white pl-2 pr-2"
+                type="button"
+                onClick={logoutTheUser}
+              >
+                Logout
+              </button>
+            ) : (
+              <button
+                className="nav-link btn btn-primary text-white pl-2 pr-2"
+                onClick={() => navigate("/login")}
+                type="button"
+              >
+                Login
+              </button>
+            )}
           </li>
         </ul>
       </div>

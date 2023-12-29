@@ -2,9 +2,26 @@ import { useNavigate } from "react-router-dom";
 import "./Login.css";
 import { useEffect, useState } from "react";
 import GoogleButton from "react-google-button";
+import { useUserAuth } from "../../context/authContext";
+import { auth } from "../../firebase";
 
 const LoginForm = () => {
   const navigate = useNavigate();
+
+  const {
+    loginUser,
+    setUser,
+    setIsLoggedIn,
+    loginWithGooglePopup,
+    isLoggedIn,
+  } = useUserAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home", { replace: true });
+    }
+    //eslint-disable-next-line
+  }, []);
 
   const [loginEmail, setLoginEmail] = useState({
     email: "",
@@ -58,6 +75,66 @@ const LoginForm = () => {
     }
   };
 
+  const loginTheUser = async () => {
+    try {
+      await loginUser(loginEmail.email, loginPassword.password);
+
+      if (auth.currentUser !== null) {
+        setIsLoggedIn(true);
+        setUser(auth.currentUser);
+        navigate("/home", { replace: true });
+        setLoginEmail((prevState) => ({
+          ...prevState,
+          email: "",
+          emailRequiredText: "",
+        }));
+        setPassword((prevState) => ({
+          ...prevState,
+          password: "",
+          passwordRequiredText: "",
+        }));
+      } else {
+        setIsLoggedIn(false);
+        setUser({});
+      }
+    } catch (error) {
+      setLoginServerMessage(error.message);
+    }
+  };
+
+  const loginWithGoogle = async (event) => {
+    event.preventDefault();
+    try {
+      await loginWithGooglePopup();
+
+      if (auth.currentUser !== null) {
+        const jwtToken = await auth.currentUser.getIdToken();
+
+        const url = "http://localhost:5007/api/add-customer";
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: auth.currentUser.displayName,
+            email: auth.currentUser.email,
+            userId: auth.currentUser.uid,
+          }),
+        };
+
+        await fetch(url, options);
+        setIsLoggedIn(true);
+        setUser(auth.currentUser);
+        navigate("/home", { replace: true });
+      }
+    } catch (error) {
+      setLoginServerMessage(error.message);
+    }
+  };
+
   const validateLoginForm = () => {
     if (loginEmail.email === "") {
       setLoginEmail((prevState) => ({
@@ -71,6 +148,8 @@ const LoginForm = () => {
         password: "",
         passwordRequiredText: "Required*",
       }));
+    } else {
+      loginTheUser();
     }
   };
 
@@ -135,7 +214,7 @@ const LoginForm = () => {
           <hr className="login-hr-line" />
         </div>
         <div className="mt-4 mb-4 login-hr-google-width-set">
-          <GoogleButton className="w-100" />
+          <GoogleButton className="w-100" onClick={loginWithGoogle} />
         </div>
       </div>
       <div className="d-flex flex-column justify-content-center align-items-center mt-4 mb-3">

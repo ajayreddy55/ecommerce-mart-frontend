@@ -1,9 +1,21 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Signup.css";
+import { useUserAuth } from "../../context/authContext";
+import { auth } from "../../firebase";
+import { updateProfile } from "firebase/auth";
 
 const SignupForm = () => {
   const navigate = useNavigate();
+
+  const { registerUser, setUser, setIsLoggedIn, isLoggedIn } = useUserAuth();
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      navigate("/home", { replace: true });
+    }
+    //eslint-disable-next-line
+  }, []);
 
   const [username, setUsername] = useState({
     name: "",
@@ -97,6 +109,60 @@ const SignupForm = () => {
     }
   };
 
+  const registerNewUser = async () => {
+    try {
+      await registerUser(emailText.email, passwordText.password, username.name);
+      await updateProfile(auth.currentUser, {
+        displayName: username.name,
+      });
+
+      if (auth.currentUser !== null) {
+        const jwtToken = await auth.currentUser.getIdToken();
+
+        const url = "http://localhost:5007/api/add-customer";
+        const options = {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${jwtToken}`,
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: auth.currentUser.displayName,
+            email: auth.currentUser.email,
+            userId: auth.currentUser.uid,
+          }),
+        };
+
+        await fetch(url, options);
+        setUsername((prevState) => ({
+          ...prevState,
+          name: "",
+          nameRequiredText: "",
+        }));
+        setEmailText((prevState) => ({
+          ...prevState,
+          email: "",
+          emailRequiredText: "",
+        }));
+        setPasswordText((prevState) => ({
+          ...prevState,
+          password: "",
+          passwordRequiredText: "",
+        }));
+        setIsLoggedIn(true);
+        setUser(auth.currentUser);
+        navigate("/home", { replace: true });
+      }
+    } catch (error) {
+      setServerResMsg((prevState) => ({
+        ...prevState,
+        messageText: error.message,
+        messageTextColor: "",
+      }));
+    }
+  };
+
   const validateFormData = () => {
     if (username.name === "") {
       setUsername((prevState) => ({
@@ -116,6 +182,8 @@ const SignupForm = () => {
         password: "",
         passwordRequiredText: "Required*",
       }));
+    } else {
+      registerNewUser();
     }
   };
 
