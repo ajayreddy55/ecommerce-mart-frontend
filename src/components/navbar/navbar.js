@@ -49,8 +49,8 @@ const Navbar = () => {
       <div className="collapse navbar-collapse" id="navbarNavDropdown">
         <ul className="navbar-nav d-flex align-items-center ml-auto">
           <li className="nav-item">
-            <NavLink className="nav-link active" to={"/home"}>
-              Home <span className="sr-only">(current)</span>
+            <NavLink className="nav-link" to={"/home"}>
+              Home
             </NavLink>
           </li>
           <li className="nav-item">

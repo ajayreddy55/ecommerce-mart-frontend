@@ -27,9 +27,6 @@ const Footer = () => {
                 <Link className="mart-footer-menu-link-item">
                   <p className="mart-footer-menu-link-text">Products</p>
                 </Link>
-                <Link className="mart-footer-menu-link-item">
-                  <p className="mart-footer-menu-link-text">Login</p>
-                </Link>
               </div>
             </div>
             <div className="col-12 col-md-4 mt-2 mb-3">

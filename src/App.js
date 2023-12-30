@@ -8,6 +8,7 @@ import SignupForm from "./components/signuppage/Signup";
 import { AuthProviderFunction } from "./context/authContext";
 import ProtectedRoute from "./protectedRoute";
 import Cart from "./components/cartpage/Cart";
+import AboutUs from "./components/aboutuspage/About";
 
 function App() {
   return (
@@ -25,6 +26,7 @@ function App() {
         <Route element={<ProtectedRoute />}>
           <Route exact path="/cart" element={<Cart />} />
         </Route>
+        <Route exact path="/about-us" element={<AboutUs />} />
       </Routes>
     </AuthProviderFunction>
   );
