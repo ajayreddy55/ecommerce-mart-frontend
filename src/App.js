@@ -9,6 +9,8 @@ import { AuthProviderFunction } from "./context/authContext";
 import ProtectedRoute from "./protectedRoute";
 import Cart from "./components/cartpage/Cart";
 import AboutUs from "./components/aboutuspage/About";
+import Success from "./components/success/Success";
+import Failure from "./components/failure/Failure";
 
 function App() {
   return (
@@ -27,6 +29,8 @@ function App() {
           <Route exact path="/cart" element={<Cart />} />
         </Route>
         <Route exact path="/about-us" element={<AboutUs />} />
+        <Route exact path="/success" element={<Success />} />
+        <Route exact path="/failure" element={<Failure />} />
       </Routes>
     </AuthProviderFunction>
   );

@@ -1,5 +1,6 @@
 import { Navigate, Outlet } from "react-router-dom";
 import { useUserAuth } from "./context/authContext";
+// import { auth } from "./firebase";
 
 const ProtectedRoute = () => {
   const { isLoggedIn } = useUserAuth();

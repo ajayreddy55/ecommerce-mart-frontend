@@ -15,7 +15,7 @@ const SignupForm = () => {
       navigate("/home", { replace: true });
     }
     //eslint-disable-next-line
-  }, []);
+  }, [isLoggedIn]);
 
   const [username, setUsername] = useState({
     name: "",

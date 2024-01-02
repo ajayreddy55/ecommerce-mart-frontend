@@ -21,7 +21,7 @@ const LoginForm = () => {
       navigate("/home", { replace: true });
     }
     //eslint-disable-next-line
-  }, []);
+  }, [isLoggedIn]);
 
   const [loginEmail, setLoginEmail] = useState({
     email: "",
